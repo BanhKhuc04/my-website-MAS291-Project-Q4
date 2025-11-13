@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Q4 – Minh họa so sánh tỷ lệ chẩn đoán hen suyễn theo dị ứng thú cưng</title>
+
+  <!-- Để hiển thị đẹp trên điện thoại -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: #f5f7fb;
+      color: #222;
+      padding: 16px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .page {
+      max-width: 960px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 20px 18px 24px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: #e7f0ff;
+      color: #255fdb;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 16px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      font-size: 12px;
+      margin-bottom: 14px;
+    }
+
+    .step {
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: #f1f3ff;
+      text-align: center;
+    }
+
+    .step strong {
+      color: #364fc7;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 5fr 5fr;
+      gap: 16px;
+      margin-top: 4px;
+    }
+
+    .card {
+      background: #fafbff;
+      border-radius: 14px;
+      padding: 14px 14px;
+      border: 1px solid #e0e5ff;
+    }
+
+    .card h2 {
+      font-size: 17px;
+      margin-bottom: 6px;
+    }
+
+    .card p {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #444;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-top: 8px;
+    }
+
+    .data-table th,
+    .data-table td {
+      border: 1px solid #dde1ff;
+      padding: 5px 6px;
+      text-align: center;
+    }
+
+    .data-table th {
+      background: #edf0ff;
+    }
+
+    .badge-group {
+      margin-top: 8px;
+      font-size: 12px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      margin-right: 6px;
+      margin-bottom: 4px;
+      background: #edf2ff;
+      color: #3749a6;
+    }
+
+    .note {
+      margin-top: 8px;
+      font-size: 12px;
+      background: #fff4e6;
+      border-radius: 10px;
+      padding: 8px 10px;
+      border: 1px solid #ffd8a8;
+      color: #92400e;
+    }
+
+    .result-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .result-box {
+      flex: 1 1 140px;
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #e0e5ff;
+      padding: 8px 10px;
+    }
+
+    .result-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #777;
+    }
+
+    .result-value {
+      font-size: 16px;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .result-desc {
+      font-size: 12px;
+      color: #666;
+      margin-top: 2px;
+    }
+
+    .conclusion {
+      margin-top: 10px;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .conclusion strong {
+      color: #255fdb;
+    }
+
+    .toggle-btn {
+      margin-top: 8px;
+      padding: 6px 10px;
+      font-size: 12px;
+      border-radius: 999px;
+      border: 1px solid #d0d4ff;
+      background: #ffffff;
+      cursor: pointer;
+      color: #364fc7;
+    }
+
+    .detail {
+      margin-top: 8px;
+      font-size: 12.5px;
+      line-height: 1.6;
+      display: none;
+      color: #444;
+    }
+
+    .detail code {
+      background: #f3f4ff;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    .footer {
+      margin-top: 14px;
+      font-size: 11px;
+      text-align: right;
+      color: #888;
+    }
+
+    .footer span {
+      font-weight: 600;
+      color: #555;
+    }
+
+    @media (max-width: 800px) {
+      body {
+        padding: 10px;
+      }
+
+      .page {
+        padding: 16px 14px 18px;
+        border-radius: 12px;
+      }
+
+      h1 {
+        font-size: 20px;
+      }
+
+      .subtitle {
+        font-size: 12.5px;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 12px 10px;
+      }
+
+      .footer {
+        text-align: center;
+        margin-top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="tag">Q4 · Thực hành thống kê · Two-proportion test</div>
+    <h1>So sánh tỷ lệ chẩn đoán hen suyễn theo dị ứng thú cưng</h1>
+    <p class="subtitle">
+      Minh họa trực quan cách kiểm định giả thuyết và hiểu kết quả p-value, khoảng tin cậy
+      cho sự khác biệt giữa hai tỷ lệ.
+    </p>
+
+    <!-- 3 bước chính -->
+    <div class="steps">
+      <div class="step"><strong>Bước 1:</strong> Xem dữ liệu & tỷ lệ</div>
+      <div class="step"><strong>Bước 2:</strong> Đặt giả thuyết H₀ / H₁</div>
+      <div class="step"><strong>Bước 3:</strong> Kiểm định & rút ra kết luận</div>
+    </div>
+
+    <div class="grid">
+      <!-- Bên trái: dữ liệu & giả thuyết -->
+      <div class="card">
+        <h2>Bước 1 & 2 – Dữ liệu và giả thuyết</h2>
+        <p>
+          Chúng ta muốn kiểm tra xem tỷ lệ bệnh nhân <strong>được chẩn đoán hen suyễn
+          (Diagnosis = 1)</strong> có khác nhau giữa hai nhóm:
+        </p>
+        <ul style="font-size: 13px; margin: 6px 0 0 18px; color:#444;">
+          <li>Nhóm <strong>Không dị ứng thú cưng</strong> (PetAllergy = 0)</li>
+          <li>Nhóm <strong>Có dị ứng thú cưng</strong> (PetAllergy = 1)</li>
+        </ul>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Nhóm</th>
+              <th>Số hen (Diagnosis=1)</th>
+              <th>Tổng số</th>
+              <th>Tỷ lệ (%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Không dị ứng (0)</td>
+              <td>106</td>
+              <td>2107</td>
+              <td><strong>5.03%</strong></td>
+            </tr>
+            <tr>
+              <td>Có dị ứng (1)</td>
+              <td>18</td>
+              <td>223</td>
+              <td><strong>8.06%</strong></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="badge-group">
+          <div class="badge">H₀: p<sub>allergy</sub> = p<sub>nonallergy</sub></div>
+          <div class="badge">H₁: p<sub>allergy</sub> ≠ p<sub>nonallergy</sub></div>
+        </div>
+
+        <div class="note">
+          <strong>Nhìn bằng mắt:</strong> nhóm có dị ứng thú cưng có vẻ có tỷ lệ hen
+          suyễn cao hơn khoảng <strong>3 điểm phần trăm</strong>. Nhưng đây mới chỉ là
+          quan sát mô tả, chưa phải kết luận.
+        </div>
+      </div>
+
+      <!-- Bên phải: biểu đồ -->
+      <div class="card">
+        <h2>Biểu đồ: so sánh hai tỷ lệ</h2>
+        <p style="font-size:12.5px; margin-bottom:6px;">
+          Biểu đồ cột thể hiện tỷ lệ chẩn đoán hen suyễn ở hai nhóm. Di chuột vào từng cột để xem giá trị.
+        </p>
+        <canvas id="q4Chart" height="210"></canvas>
+      </div>
+    </div>
+
+    <!-- Kết quả kiểm định -->
+    <div class="card" style="margin-top: 16px;">
+      <h2>Bước 3 – Kết quả kiểm định & ý nghĩa</h2>
+
+      <div class="result-row">
+        <div class="result-box">
+          <div class="result-label">Phương pháp</div>
+          <div class="result-value">Chi-square test</div>
+          <div class="result-desc">Kiểm định hai tỷ lệ độc lập</div>
+        </div>
+
+        <div class="result-box">
+          <div class="result-label">p-value</div>
+          <div class="result-value">0.089</div>
+          <div class="result-desc">Lớn hơn mức α = 0.05</div>
+        </div>
+
+        <div class="result-box">
+          <div class="result-label">Ước lượng Δp</div>
+          <div class="result-value">≈ 3.03%</div>
+          <div class="result-desc">8.06% − 5.03%</div>
+        </div>
+
+        <div class="result-box">
+          <div class="result-label">KTC 95% cho Δp</div>
+          <div class="result-value">Chứa 0</div>
+          <div class="result-desc">Không loại trừ khả năng hai tỷ lệ bằng nhau</div>
+        </div>
+      </div>
+
+      <div class="conclusion">
+        <strong>Kết luận:</strong> Vì p-value = 0.089 &gt; 0.05, chúng ta
+        <strong>không bác bỏ giả thuyết H₀</strong>. Mặc dù trong mẫu,
+        nhóm có dị ứng thú cưng có tỷ lệ hen suyễn cao hơn khoảng 3%, nhưng
+        bằng chứng thống kê <strong>chưa đủ mạnh</strong> để khẳng định
+        rằng dị ứng thú cưng làm thay đổi tỷ lệ được chẩn đoán hen suyễn
+        trong toàn bộ tổng thể.
+      </div>
+
+      <button class="toggle-btn" onclick="toggleDetail()">
+        🔍 Xem giải thích p-value & khoảng tin cậy (cho người mới học)
+      </button>
+
+      <div class="detail" id="detailBox">
+        <p>
+          <strong>p-value = 0.089 nghĩa là gì?</strong><br/>
+          Nếu thực tế hai nhóm <em>không hề khác nhau</em> về tỷ lệ hen suyễn
+          (H₀ đúng), thì khả năng chúng ta thấy một sự khác biệt lớn như mẫu
+          này (hoặc lớn hơn) là khoảng <strong>8.9%</strong>. Đây không phải là
+          “rất hiếm”, nên ta không đủ lý do để nói H₀ sai.
+        </p>
+        <p style="margin-top:6px;">
+          <strong>Khoảng tin cậy 95% cho Δp chứa 0 nghĩa là gì?</strong><br/>
+          KTC 95% cho Δp = p<sub>allergy</sub> − p<sub>nonallergy</sub> bao gồm
+          cả giá trị 0. Điều đó nói rằng, với dữ liệu hiện có, chênh lệch thật
+          sự giữa hai tỷ lệ trong dân số có thể là dương, âm hoặc bằng 0 –
+          tức là <strong>chúng ta không thể khẳng định tồn tại khác biệt rõ ràng</strong>.
+        </p>
+        <p style="margin-top:6px;">
+          Đây là ví dụ điển hình cho việc:
+          <strong>khác biệt mô tả (3%) chưa chắc đã có ý nghĩa thống kê</strong>.
+        </p>
+      </div>
+    </div>
+
+    <div class="footer">
+      Demo Q4 · <span>by vanhkhuc</span>
+    </div>
+  </div>
+
+  <script>
+    // Vẽ biểu đồ với Chart.js
+    const ctx = document.getElementById('q4Chart').getContext('2d');
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Không dị ứng (0)', 'Có dị ứng (1)'],
+        datasets: [{
+          label: 'Tỷ lệ chẩn đoán hen suyễn (%)',
+          data: [5.03, 8.06],
+          backgroundColor: ['#88c8ff', '#ffb3c6'],
+          borderRadius: 10,
+          borderSkipped: false
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                return context.parsed.y.toFixed(2) + '% bệnh nhân được chẩn đoán';
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Tỷ lệ (%)'
+            }
+          }
+        }
+      }
+    });
+
+    // Ẩn/hiện giải thích chi tiết
+    function toggleDetail() {
+      const box = document.getElementById('detailBox');
+      box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+    }
+  </script>
+</body>
+</html>
