@@ -307,14 +307,14 @@
             <tr>
               <td>Không dị ứng (0)</td>
               <td>106</td>
-              <td>2107</td>
-              <td><strong>5.03%</strong></td>
+              <td>1995</td>
+              <td><strong>5.31%</strong></td>
             </tr>
             <tr>
               <td>Có dị ứng (1)</td>
               <td>18</td>
-              <td>223</td>
-              <td><strong>8.06%</strong></td>
+              <td>397</td>
+              <td><strong>4.53%</strong></td>
             </tr>
           </tbody>
         </table>
@@ -325,9 +325,9 @@
         </div>
 
         <div class="note">
-          <strong>Nhìn bằng mắt:</strong> nhóm có dị ứng thú cưng có vẻ có tỷ lệ hen
-          suyễn cao hơn khoảng <strong>3 điểm phần trăm</strong>. Nhưng đây mới chỉ là
-          quan sát mô tả, chưa phải kết luận.
+          <strong>Nhìn bằng mắt:</strong> nhóm <strong>không dị ứng thú cưng</strong> có vẻ
+          có tỷ lệ hen suyễn hơi cao hơn, khoảng <strong>0.8 điểm phần trăm</strong> so với nhóm dị ứng.
+          Tuy nhiên đây mới chỉ là quan sát mô tả, chưa phải kết luận.
         </div>
       </div>
 
@@ -354,14 +354,14 @@
 
         <div class="result-box">
           <div class="result-label">p-value</div>
-          <div class="result-value">0.089</div>
-          <div class="result-desc">Lớn hơn mức α = 0.05</div>
+          <div class="result-value">0.606</div>
+          <div class="result-desc">Lớn hơn nhiều mức α = 0.05</div>
         </div>
 
         <div class="result-box">
           <div class="result-label">Ước lượng Δp</div>
-          <div class="result-value">≈ 3.03%</div>
-          <div class="result-desc">8.06% − 5.03%</div>
+          <div class="result-value">≈ −0.78%</div>
+          <div class="result-desc">4.53% − 5.31%</div>
         </div>
 
         <div class="result-box">
@@ -372,12 +372,12 @@
       </div>
 
       <div class="conclusion">
-        <strong>Kết luận:</strong> Vì p-value = 0.089 &gt; 0.05, chúng ta
+        <strong>Kết luận:</strong> Vì p-value = 0.606 &gt; 0.05, chúng ta
         <strong>không bác bỏ giả thuyết H₀</strong>. Mặc dù trong mẫu,
-        nhóm có dị ứng thú cưng có tỷ lệ hen suyễn cao hơn khoảng 3%, nhưng
-        bằng chứng thống kê <strong>chưa đủ mạnh</strong> để khẳng định
-        rằng dị ứng thú cưng làm thay đổi tỷ lệ được chẩn đoán hen suyễn
-        trong toàn bộ tổng thể.
+        nhóm có dị ứng thú cưng có tỷ lệ hen suyễn <strong>hơi thấp hơn</strong> khoảng
+        0.8 điểm phần trăm so với nhóm không dị ứng, nhưng bằng chứng thống kê
+        <strong>chưa đủ mạnh</strong> để khẳng định rằng dị ứng thú cưng làm thay đổi
+        tỷ lệ được chẩn đoán hen suyễn trong toàn bộ tổng thể.
       </div>
 
       <button class="toggle-btn" onclick="toggleDetail()">
@@ -386,11 +386,11 @@
 
       <div class="detail" id="detailBox">
         <p>
-          <strong>p-value = 0.089 nghĩa là gì?</strong><br/>
+          <strong>p-value = 0.606 nghĩa là gì?</strong><br/>
           Nếu thực tế hai nhóm <em>không hề khác nhau</em> về tỷ lệ hen suyễn
           (H₀ đúng), thì khả năng chúng ta thấy một sự khác biệt lớn như mẫu
-          này (hoặc lớn hơn) là khoảng <strong>8.9%</strong>. Đây không phải là
-          “rất hiếm”, nên ta không đủ lý do để nói H₀ sai.
+          này (hoặc lớn hơn) là khoảng <strong>60.6%</strong>. Đây là một xác suất khá lớn,
+          nên ta không có lý do để nói H₀ sai.
         </p>
         <p style="margin-top:6px;">
           <strong>Khoảng tin cậy 95% cho Δp chứa 0 nghĩa là gì?</strong><br/>
@@ -401,7 +401,7 @@
         </p>
         <p style="margin-top:6px;">
           Đây là ví dụ điển hình cho việc:
-          <strong>khác biệt mô tả (3%) chưa chắc đã có ý nghĩa thống kê</strong>.
+          <strong>khác biệt mô tả (~0.8%) chưa chắc đã có ý nghĩa thống kê</strong>.
         </p>
       </div>
     </div>
@@ -421,7 +421,7 @@
         labels: ['Không dị ứng (0)', 'Có dị ứng (1)'],
         datasets: [{
           label: 'Tỷ lệ chẩn đoán hen suyễn (%)',
-          data: [5.03, 8.06],
+          data: [5.31, 4.53],
           backgroundColor: ['#88c8ff', '#ffb3c6'],
           borderRadius: 10,
           borderSkipped: false
